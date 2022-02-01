@@ -2,7 +2,7 @@
   <div id="search-page" class="data-search-page">
     <v-data-table item-key="name" no-data-text="No items to show." class="row-pointer"
       :page="page"
-      :items-per-page="{itemsPerPage}"
+      :items-per-page="itemsPerPage"
       :items="packages"
       :headers="headers"
       :server-items-length="totalItems"
@@ -47,16 +47,16 @@ export default {
   computed: mapGetters(["packages", "totalItems"]),
   methods: {
     pageChanged(page) {
-      this.isWait = true;
+      this.isWait = !this.isWait;
       this.page = page;
       this.$store.dispatch("fetchPackages", { page, query: this.query });
-      this.isWait = false;
+      this.isWait = !this.isWait;
     },
     searchSubmitted() {
-      this.isWait = true;
+      this.isWait = !this.isWait;
       const page = (this.page = 1);
       this.$store.dispatch("fetchPackages", { page, query: this.query });
-      this.isWait = false;
+      this.isWait = !this.isWait;
     },
     onRowSelected(item) {
       this.$router.push({
