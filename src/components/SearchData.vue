@@ -1,0 +1,87 @@
+<template>
+  <div id="search-page" class="data-search-page">
+    <v-data-table item-key="name" no-data-text="No items to show." class="row-pointer"
+      :page="page"
+      :items-per-page="{itemsPerPage}"
+      :items="packages"
+      :headers="headers"
+      :server-items-length="totalItems"
+      :loading="isWait"
+      :disable-sort="true"
+      :footer-props="{'disable-items-per-page': true, 'disable-pagination': isWait, }"
+      @click:row="onRowSelected" @update:page="pageChanged">
+      <template slot="top">
+        <v-toolbar height="80px" :elevation="1" >
+          <v-container class="toolbar">
+            <v-form @submit.prevent="searchSubmitted">
+              <v-text-field label="Search" prepend-inner-icon="mdi-magnify" filled clearable v-model="query"
+                :hide-details="true"
+                :full-width="true">
+                </v-text-field>
+            </v-form>
+          </v-container>
+        </v-toolbar>
+      </template>
+    </v-data-table>
+    <router-view />
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+
+export default {
+  data() {
+    return {
+      query: "",
+      headers: [
+        { text: "Name", value: "name" },
+        { text: "Author", value: "author" },
+        { text: "Version", value: "version" },
+      ],
+      isWait: false,
+      page: 1,
+      itemsPerPage: 10,
+    };
+  },
+  computed: mapGetters(["packages", "totalItems"]),
+  methods: {
+    pageChanged(page) {
+      this.isWait = true;
+      this.page = page;
+      this.$store.dispatch("fetchPackages", { page, query: this.query });
+      this.isWait = false;
+    },
+    searchSubmitted() {
+      this.isWait = true;
+      const page = (this.page = 1);
+      this.$store.dispatch("fetchPackages", { page, query: this.query });
+      this.isWait = false;
+    },
+    onRowSelected(item) {
+      this.$router.push({
+        name: "PackageDetails",
+        params: { name: item.name },
+      });
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.toolbar {
+  max-width: 100%;
+}
+
+.data-search-page {
+  .row-pointer::v-deep {
+    .v-data-table__wrapper {
+      tbody {
+        tr:not(.v-data-table__empty-wrapper) {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+</style>
