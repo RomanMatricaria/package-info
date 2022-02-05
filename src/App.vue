@@ -3,7 +3,7 @@
     <v-main>
       <router-view/>
     </v-main>
-    <AuthorFooter/>
+    <AuthorFooter author="Roman Tsvid" github="https://github.com/RomanMatricaria"/>
   </v-app>
 </template>
 

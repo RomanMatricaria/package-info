@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Search from '../views/PackageSearch'
-import Details from '../views/PackageDetails'
+import DetailsInfo from '../views/PackageDetails'
 
 Vue.use(VueRouter)
 
@@ -13,8 +13,8 @@ const routes = [
     children: [
       {
         path: '/package/:name',
-        name: 'PackageDetails',
-        component: Details
+        name: 'PackageInfo',
+        component: DetailsInfo
       }
     ]
   }

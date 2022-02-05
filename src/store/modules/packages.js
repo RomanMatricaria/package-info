@@ -21,17 +21,20 @@ export default {
             let response;
             try {
                 response = await axios.get(`https://registry.npmjs.org/-/v1/search`, {
-                    params: { text, size, from }
-                });
+                    params: {
+                        text,
+                        size,
+                        from
+                }});
             } catch (e) {
                 console.error(e);
                 return;
             }
-            commit("SET_PACKAGES", response.data);
+            commit("setPackages", response.data);
         }
     },
     mutations: {
-        ["SET_PACKAGES"](state, packages) { 
+        setPackages(state, packages) { 
             state.packages = packages;
         },
     }
