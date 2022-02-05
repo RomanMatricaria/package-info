@@ -1,7 +1,8 @@
 <template>
   <div 
     id="search-page" 
-    class="data-search-page">
+    class="data-search-page"
+  >
     <v-data-table 
       item-key="name" 
       no-data-text="No items to show." 
